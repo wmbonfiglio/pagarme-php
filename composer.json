@@ -1,32 +1,21 @@
 {
-	"name": "pagarme/pagarme-php",
-	"description": "Pagar.me PHP Library",
-	"keywords": [
-		"pagar.me",
-		"pagarme",
-		"pagamentos",
-		"payments brazil",
-		"pagamento brasil",
-		"api"
-	],
-	"homepage": "http://pagar.me",
-	"license": "MIT",
+	"name": "Pagarme",
+	"description": "Libery Pagarme PHP",
+	"require": {
+		"phpunit/phpunit": "5.3.2",
+		"zendframework/zend-http": "2.5.*",
+		"raven/raven": "0.13.*"
+	},
+	"autoload": {
+		"psr-4": {
+			"Pagarme\\": ["src/","tests/"]
+		}
+	},
 	"authors": [
 		{
-			"name": "Pagar.me and contributors",
-			"homepage": "https://github.com/pagarme/pagarme-php/graphs/contributors"
+			"name": "Lucas Santos",
+			"email": "lucas.santos@pagar.me"
 		}
 	],
-	"require": {
-		"php": ">5.3",
-		"ext-curl":"*",
-		"ext-json":"*",
-		"ext-mbstring":"*"
-	},
-	"require-dev": {
-		 "simpletest/simpletest": "*"
-	},
-	"autoload": { 
-		"classmap":["lib/Pagarme"]
-	}
+	"minimum-stability": "dev"
 }
