@@ -23,7 +23,7 @@ class Adapter implements AdapterInterface
     /**
      * @var Params
      */
-    protected $params = [];
+    protected $apiKey;
 
     /**
      * Adapter constructor.
@@ -33,7 +33,7 @@ class Adapter implements AdapterInterface
     public function __construct($apiKey, ClientInterface $client = null)
     {
         $this->client = $client ?: new Client();
-        $this->params['api_key'] = $apiKey;
+        $this->apiKey = $apiKey;
     }
 
     /**
@@ -43,7 +43,11 @@ class Adapter implements AdapterInterface
     public function get($url)
     {
         try {
-            $this->response = $this->client->get($url);
+            $this->response = $this->client->get($url, array(
+                'query' => array(
+                    'api_key' => $this->apiKey
+                )
+            ));
         } catch (RequestException $e) {
             $this->response = $e->getResponse();
             $this->handleError();
