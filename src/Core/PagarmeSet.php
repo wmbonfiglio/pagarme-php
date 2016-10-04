@@ -1,6 +1,6 @@
-<?php
+<?php namespace Pagarme\Core;
 
-class PagarMe_Set implements Iterator {
+class PagarmeSet implements \Iterator {
 
 	private $_values;
 	private $_orderedValues;

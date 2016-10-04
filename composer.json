@@ -27,6 +27,8 @@
 		 "simpletest/simpletest": "*"
 	},
 	"autoload": { 
-		"classmap":["lib/Pagarme"]
+        "psr-4": {
+            "Pagarme\\": "src"
+        }
 	}
 }

@@ -1,6 +1,10 @@
-<?php
+<?php namespace Pagarme\Transaction;
 
-class PagarMe_TransactionCommon extends PagarMe_CardHashCommon {
+use Pagarme\Core\PagarmeRequest;
+use Pagarme\Models\CardHashCommon;
+
+class TransactionCommon extends CardHashCommon
+{
 	public function __construct($response = array())
 	{
 		parent::__construct($response);
@@ -45,7 +49,7 @@ class PagarMe_TransactionCommon extends PagarMe_CardHashCommon {
 
 	public static function calculateInstallmentsAmount($amount, $interest_rate, $max_installments, $freeInstallments = false)
 	{
-		$request = new PagarMe_Request(self::getUrl() . '/calculate_installments_amount', 'GET');
+		$request = new PagarmeRequest(self::getUrl() . '/calculate_installments_amount', 'GET');
 		$params = array('amount' 			=> $amount,
 						'interest_rate' 	=> $interest_rate,
 						'max_installments' 	=> $max_installments);

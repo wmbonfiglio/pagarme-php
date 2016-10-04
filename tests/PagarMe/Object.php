@@ -3,8 +3,8 @@
 class PagarMe_ObjectTest extends  PagarMeTestCase {
 	public function testBuild() {
 		$obj = self::createPagarMeObject();
-		$this->assertTrue($obj instanceof PagarMe_Transaction);
-		$this->assertTrue($obj->customer instanceof PagarMe_Customer);
+		$this->assertTrue($obj instanceof \Pagarme\Transaction\Transaction);
+		$this->assertTrue($obj->customer instanceof \Pagarme\Models\Customer);
 	}
 
 	public function testSet() {
@@ -20,7 +20,7 @@ class PagarMe_ObjectTest extends  PagarMeTestCase {
 	}
 
 	public function testForeach() {
-		$obj = new PagarMe_Object(array('abc' => 'd', 'bcd' => 'e', 'vvvv' => '1234', 'bkg' => 4444, 'bsfs' => 555));
+		$obj = new \Pagarme\Core\PagarmeObject(array('abc' => 'd', 'bcd' => 'e', 'vvvv' => '1234', 'bkg' => 4444, 'bsfs' => 555));
 		$count = 0;
 
 		foreach($obj as $k => $v) {

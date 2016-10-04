@@ -35,7 +35,7 @@ class PagarMe_SubscriptionTest extends PagarMeTestCase {
 		$subscription->setPaymentMethod('boleto');
 		$subscription->save();
 
-		$subscription2 = PagarMe_Subscription::findById($subscription->getId());
+		$subscription2 = \Pagarme\Transaction\Subscription::findById($subscription->getId());
 		$this->assertEqual($subscription2->getPaymentMethod(), 'boleto');
 	}
 
@@ -46,7 +46,7 @@ class PagarMe_SubscriptionTest extends PagarMeTestCase {
 		$subscription->setPlan($plan);
 		$subscription->create();
 
-		$plan2 = new PagarMe_Plan(array(
+		$plan2 = new \Pagarme\Models\Plan(array(
 			'name' => 'Plano 2',
 			'days' => '10',
 			'amount' => 4500,
@@ -58,7 +58,7 @@ class PagarMe_SubscriptionTest extends PagarMeTestCase {
 		$subscription->plan = $plan2;
 		$subscription->save();
 
-		$s2 = PagarMe_Subscription::findById($subscription->id);
+		$s2 = \Pagarme\Transaction\Subscription::findById($subscription->id);
 
 		$this->assertEqual($s2->plan->id, $plan2->id);
 	}
@@ -82,7 +82,7 @@ class PagarMe_SubscriptionTest extends PagarMeTestCase {
 		$this->assertTrue($subscription->getPlan()->getId());
 		$this->assertTrue($plan->getId());
 
-		$subscription2 = PagarMe_Subscription::findById($subscription->getId());
+		$subscription2 = \Pagarme\Transaction\Subscription::findById($subscription->getId());
 		$this->assertTrue($subscription2->getPlan());
 		$this->assertEqual($subscription2->getPlan()->getId(), $plan->getId());
 	}
@@ -99,12 +99,12 @@ class PagarMe_SubscriptionTest extends PagarMeTestCase {
 		$this->assertTrue($subscription->getPlan()->getId());
 		$this->assertTrue($plan->getId());
 
-		$subscription2 = PagarMe_Subscription::findById($subscription->getId());
+		$subscription2 = \Pagarme\Transaction\Subscription::findById($subscription->getId());
 		$this->assertTrue($subscription2->getPlan());
 		$this->assertEqual($subscription2->getPlan()->getId(), $plan->getId());
 
 		$card = self::createTestCard();
-		$subscription3 = new PagarMe_Subscription(array(
+		$subscription3 = new \Pagarme\Transaction\Subscription(array(
 			'customer' => array(
 				'email' => 'lala@lala.com',
 			),
@@ -116,7 +116,7 @@ class PagarMe_SubscriptionTest extends PagarMeTestCase {
 		$this->assertTrue($subscription3->getId());
 
 		$card->create();
-		$subscription4 = new PagarMe_Subscription(array(
+		$subscription4 = new \Pagarme\Transaction\Subscription(array(
 			'customer' => array(
 				'email' => 'lala@lala.com',
 			),
@@ -127,7 +127,7 @@ class PagarMe_SubscriptionTest extends PagarMeTestCase {
 
 		$this->assertTrue($subscription4->getId());
 
-		$subscription4 = new PagarMe_Subscription(array(
+		$subscription4 = new \Pagarme\Transaction\Subscription(array(
 			'card' => $card,
 			'customer' => array(
 				'email' => 'lala@lala.com',

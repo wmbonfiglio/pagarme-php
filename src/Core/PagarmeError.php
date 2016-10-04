@@ -1,6 +1,6 @@
-<?php
+<?php namespace Pagarme\Core;
 
-class PagarMe_Error {
+class PagarmeError {
         protected $parameter_name, $type, $message;
 
         public function __construct($error) {

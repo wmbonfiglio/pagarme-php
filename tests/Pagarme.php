@@ -5,7 +5,7 @@ function authorizeFromEnv()
     $apiKey = getenv('PAGARME_API_KEY');
     if (!$apiKey)
         $apiKey = "ak_test_Rw4JR98FmYST2ngEHtMvVf5QJW7Eoo";
-    PagarMe::setApiKey($apiKey);
+    Pagarme\Pagarme::setApiKey($apiKey);
 }
 
 $ok = @include_once(dirname(__FILE__).'/simpletest/autorun.php');
@@ -28,7 +28,8 @@ function exception_error_handler($errno, $errstr, $errfile, $errline) {
 set_error_handler('exception_error_handler');
 error_reporting(E_ALL | E_STRICT);
 
-require_once(dirname(__FILE__) . '../../Pagarme.php');
+require_once __DIR__."/../vendor/autoload.php";
+require_once(dirname(__FILE__) . '/../src/Pagarme.php');
 require_once(dirname(__FILE__) . '/PagarMe/TestCase.php');
 require_once(dirname(__FILE__) . '/PagarMe/Object.php');
 require_once(dirname(__FILE__) . '/PagarMe/Util.php');

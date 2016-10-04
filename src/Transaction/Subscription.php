@@ -1,6 +1,9 @@
-<?php
+<?php namespace Pagarme\Transaction;
 
-class PagarMe_Subscription extends PagarMe_TransactionCommon {
+use Pagarme\Core\PagarmeRequest;
+use Pagarme\Core\PagarmeUtil;
+
+class Subscription extends TransactionCommon {
 
 	public function create() {
 		if($this->plan) {
@@ -19,14 +22,14 @@ class PagarMe_Subscription extends PagarMe_TransactionCommon {
 	}
 
 	public function getTransactions() {
-			$request = new PagarMe_Request(self::getUrl() . '/' . $this->id . '/transactions', 'GET');
+			$request = new PagarmeRequest(self::getUrl() . '/' . $this->id . '/transactions', 'GET');
 			$response = $request->run();
-			$this->transactions = PagarMe_Util::convertToPagarMeObject($response);
+			$this->transactions = PagarmeUtil::convertToPagarMeObject($response);
 			return $this->transactions;
 	}
 
 	public function cancel() {
-			$request = new PagarMe_Request(self::getUrl() . '/' . $this->id . '/cancel', 'POST');
+			$request = new PagarmeRequest(self::getUrl() . '/' . $this->id . '/cancel', 'POST');
 			$response = $request->run();
 			$this->refresh($response);
 	}
@@ -34,11 +37,11 @@ class PagarMe_Subscription extends PagarMe_TransactionCommon {
 	public function charge($amount, $installments=1) {
 			$this->amount = $amount;
 			$this->installments = $installments;
-			$request = new PagarMe_Request(self::getUrl(). '/' . $this->id . '/transactions', 'POST');
+			$request = new PagarmeRequest(self::getUrl(). '/' . $this->id . '/transactions', 'POST');
 			$request->setParameters($this->unsavedArray());
 			$response = $request->run();
 
-			$request = new PagarMe_Request(self::getUrl() . '/' . $this->id, 'GET');
+			$request = new PagarmeRequest(self::getUrl() . '/' . $this->id, 'GET');
 			$response = $request->run();
 			$this->refresh($response);
 	}

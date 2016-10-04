@@ -1,6 +1,9 @@
-<?php
+<?php namespace Pagarme\Models;
 
-class PagarMe_Payable extends PagarMe_Model
+use Pagarme\Core\PagarmeRequest;
+use Pagarme\Core\PagarmeModel;
+
+class Payable extends PagarmeModel
 {
     const ENDPOINT_TRANSACTIONS = '/transactions';
     const ENDPOINT_PAYABLES = '/payables';
@@ -13,7 +16,7 @@ class PagarMe_Payable extends PagarMe_Model
      */
     public static function findAllByTransactionId($transactionId)
     {
-        $request = new PagarMe_Request(
+        $request = new PagarmeRequest(
             self::ENDPOINT_TRANSACTIONS . '/' . $transactionId . self::ENDPOINT_PAYABLES, 'GET'
         );
 
@@ -31,7 +34,7 @@ class PagarMe_Payable extends PagarMe_Model
      */
     public static function findTrasactionById($transactionId, $payableId)
     {
-        $request = new PagarMe_Request(
+        $request = new PagarmeRequest(
             self::ENDPOINT_TRANSACTIONS . '/' . $transactionId . self::ENDPOINT_PAYABLES . '/' . $payableId, 'GET'
         );
 

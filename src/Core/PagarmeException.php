@@ -1,6 +1,6 @@
-<?php
+<?php namespace Pagarme\Core;
 
-class PagarMe_Exception extends Exception {
+class PagarmeException extends \Exception {
 	protected $url, $method, $return_code, $parameter_name, $type, $errors;
 
 	// Builds with a message and a response from the server
@@ -11,7 +11,7 @@ class PagarMe_Exception extends Exception {
 
 		if(isset($response_error['errors'])) {
 			foreach($response_error['errors'] as $error) {
-				$this->errors[] = new PagarMe_Error($error);
+				$this->errors[] = new PagarmeError($error);
 			}
 		}
 

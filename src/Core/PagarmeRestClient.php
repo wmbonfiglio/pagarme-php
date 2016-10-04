@@ -1,6 +1,6 @@
-<?php
+<?php namespace Pagarme\Core;
 
-class RestClient {
+class PagarmeRestClient {
 	private $http_client;
 	private $method;
 	private $url;
@@ -17,7 +17,7 @@ class RestClient {
 		);
 
 		if(!$params["url"]) {
-			throw new PagarMe_Exception("You must set the URL to make a request.");
+			throw new PagarmeException("You must set the URL to make a request.");
 		} else {
 			$this->url = $params["url"];
 		}
@@ -64,7 +64,7 @@ class RestClient {
 
 		curl_setopt($this->curl, CURLOPT_URL, $this->url);
 		curl_setopt($this->curl, CURLOPT_HTTPHEADER, $this->headers);
-		curl_setopt($this->curl, CURLOPT_CAINFO, dirname(__FILE__) . '/ca-certificates.crt');
+		curl_setopt($this->curl, CURLOPT_CAINFO, dirname(__FILE__) . '/../ca-certificates.crt');
 	}
 
 	public function run()
@@ -73,7 +73,7 @@ class RestClient {
 		$error = curl_error($this->curl);
 
 		if ($error) {
-			throw new PagarMe_Exception("error: ".$error);
+			throw new PagarmeException("error: ".$error);
 		}
 
 		$code = curl_getinfo($this->curl, CURLINFO_HTTP_CODE);

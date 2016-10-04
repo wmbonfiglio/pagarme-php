@@ -12,7 +12,7 @@ abstract class PagarMeTestCase extends UnitTestCase {
 
 	protected static function createTestTransaction(array $attributes = array()) {
 		authorizeFromEnv();
-		return new PagarMe_Transaction(
+		return new \Pagarme\Transaction\Transaction (
 			$attributes +
 			array(
 			"amount" => '1000',
@@ -47,7 +47,7 @@ abstract class PagarMeTestCase extends UnitTestCase {
 
 	protected static function createTestCard(array $attributes = array()) {
 		authorizeFromEnv();
-		return new PagarMe_Card(array(
+		return new \Pagarme\Models\Card (array(
 			'card_number' => '4111111111111111',
 			'card_holder_name' => 'Jose da Silva',
 			'card_expiration_month' => '10',
@@ -58,7 +58,7 @@ abstract class PagarMeTestCase extends UnitTestCase {
 
 	protected static function createTestCardPassingMonthCardWithaSingleDigit(array $attributes = array()) {
 		authorizeFromEnv();
-		return new PagarMe_Card(array(
+		return new \Pagarme\Models\Card (array(
 			'card_number' => '4111111111111111',
 			'card_holder_name' => 'Jose da Silva',
 			'card_expiration_month' => 6,
@@ -76,7 +76,7 @@ abstract class PagarMeTestCase extends UnitTestCase {
 
 	protected static function createTestPlan(array $attributes = array()) {
 		authorizeFromEnv();
-		return new PagarMe_Plan($attributes +
+		return new \Pagarme\Models\Plan($attributes +
 			array(
 				'amount' => 1000,
 				'days' => '30',
@@ -96,7 +96,7 @@ abstract class PagarMeTestCase extends UnitTestCase {
 
 	protected static function createTestSubscription(array $attributes = array()) {
 		authorizeFromEnv();
-		return new PagarMe_Subscription($attributes + array(
+		return new \Pagarme\Transaction\Subscription($attributes + array(
 			"card_number" => "4901720080344448",
 			"card_holder_name" => "Jose da Silva",
 			"card_expiration_month" => 12,
@@ -111,7 +111,7 @@ abstract class PagarMeTestCase extends UnitTestCase {
 	protected static function createTestBankAccount(array $attributes = array()) {
 		authorizeFromEnv();
 
-		return new PagarMe_Bank_Account(array(
+		return new \Pagarme\Models\Bank_Account(array(
 			"bank_code" => "341",
 			"agencia" => "0932",
 			"agencia_dv" => "5",
@@ -125,7 +125,7 @@ abstract class PagarMeTestCase extends UnitTestCase {
 	protected static function createTestRecipient(array $attributes = array()) {
 		authorizeFromEnv();
 
-		return new PagarMe_Recipient(array(
+		return new \Pagarme\Models\Recipient (array(
 			"transfer_interval" => "weekly",
 			"transfer_day" => 5,
 			"transfer_enabled" => true,
@@ -161,7 +161,7 @@ abstract class PagarMeTestCase extends UnitTestCase {
 	}
 
 	protected static function createTestSet() {
-		return new PagarMe_Set(array('key', 'value', 'key', 'value', 'abc', 'bcd', 'kkkk'));
+		return new \Pagarme\Core\PagarmeSet(array('key', 'value', 'key', 'value', 'abc', 'bcd', 'kkkk'));
 	}
 
 	protected static function createPagarMeObject() {
@@ -185,7 +185,7 @@ abstract class PagarMeTestCase extends UnitTestCase {
 					'street' => 'asdas'
 				)
 			));
-		return PagarMe_Object::build($response, 'PagarMe_Transaction');
+		return \Pagarme\Core\PagarmeObject::build($response, 'PagarMe_Transaction');
 	}
 
 	protected function validateAddress($addr) {

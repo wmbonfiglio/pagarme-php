@@ -1,6 +1,6 @@
-<?php
+<?php namespace Pagarme\Core;
 
-class PagarMe_Model extends PagarMe_Object {
+class PagarmeModel extends PagarmeObject {
 	protected static $root_url;
 
 	public function __construct($response = array()) {
@@ -9,19 +9,20 @@ class PagarMe_Model extends PagarMe_Object {
 
 	public static function getUrl() {
 		$class = get_called_class();
-		$search = preg_match("/PagarMe_(.*)/",$class, $matches);
-		return '/'. strtolower($matches[1]) . 's';
+		// $search = preg_match("/PagarMe_(.*)/",$class, $matches);
+		$search = explode('\\', $class);
+		return '/'. strtolower(end($search)) . 's';
 	}
 
 	public function create() {
 		try {
-			$request = new PagarMe_Request(self::getUrl(), 'POST');
+			$request = new PagarmeRequest(self::getUrl(), 'POST');
 			$parameters = $this->__toArray(true);
 			$request->setParameters($parameters);
 			$response = $request->run();
 			return $this->refresh($response);
 		} catch(Exception $e) {
-			throw new PagarMe_Exception($e->getMessage());
+			throw new PagarmeException($e->getMessage());
 		}
 	}
 
@@ -31,20 +32,19 @@ class PagarMe_Model extends PagarMe_Object {
 			if(method_exists(get_called_class(), 'validate')) {
 				if(!$this->validate()) return false;
 			}
-			$request = new PagarMe_Request(self::getUrl(). '/' . $this->id, 'PUT');
+			$request = new PagarmeRequest(self::getUrl(). '/' . $this->id, 'PUT');
 			$parameters = $this->unsavedArray();
 			$request->setParameters($parameters);
 			$response = $request->run();
 			return $this->refresh($response);
 		} catch(Exception $e) {
-			throw new PagarMe_Exception($e->getMessage());
+			throw new PagarmeException($e->getMessage());
 		}
 	}
 
-
 	public static function findById($id)
 	{
-		$request = new PagarMe_Request(self::getUrl() . '/' . $id, 'GET');
+		$request = new PagarmeRequest(self::getUrl() . '/' . $id, 'GET');
 		$response = $request->run();
 		$class = get_called_class();
 		return new $class($response);
@@ -52,7 +52,7 @@ class PagarMe_Model extends PagarMe_Object {
 
 	public static function all($page = 1, $count = 10)
 	{
-		$request = new PagarMe_Request(self::getUrl(), 'GET');
+		$request = new PagarmeRequest(self::getUrl(), 'GET');
 		$request->setParameters(array("page" => $page, "count" => $count));
 		$response = $request->run();
 		$return_array = Array();

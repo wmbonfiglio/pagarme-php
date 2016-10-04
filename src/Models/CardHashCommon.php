@@ -1,9 +1,12 @@
-<?php
+<?php namespace Pagarme\Models;
 
-class PagarMe_CardHashCommon extends PagarMe_Model {
+use Pagarme\Core\PagarmeRequest;
+use Pagarme\Core\PagarmeModel;
+
+class CardHashCommon extends PagarmeModel {
 	public function generateCardHash()
 	{
-		$request = new PagarMe_Request('/transactions/card_hash_key','GET');
+		$request = new PagarmeRequest('/transactions/card_hash_key','GET');
 		$response = $request->run();
 		$key = openssl_get_publickey($response['public_key']);
 		$params = array(

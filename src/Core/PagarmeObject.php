@@ -1,6 +1,6 @@
-<?php
+<?php namespace Pagarme\Core;
 
-class PagarMe_Object implements ArrayAccess, Iterator {
+class PagarmeObject implements \ArrayAccess, \Iterator {
 
 	protected $_attributes;
 	protected $_unsavedAttributes;
@@ -8,7 +8,7 @@ class PagarMe_Object implements ArrayAccess, Iterator {
 
 	public function __construct($response = array()) {
 		$this->_attributes = Array();
-		$this->_unsavedAttributes = new PagarMe_Set();
+		$this->_unsavedAttributes = new PagarmeSet();
 		$this->_position = 0;
 
 		$this->refresh($response);
@@ -16,7 +16,7 @@ class PagarMe_Object implements ArrayAccess, Iterator {
 
 	public function __set($key, $value) {
 		if($key == "") {
-			throw new Exception('Cannot store invalid key');
+			throw new PagarmeException('Cannot store invalid key');
 		}
 
 		$this->_attributes[$key] = $value;
@@ -41,13 +41,13 @@ class PagarMe_Object implements ArrayAccess, Iterator {
 	}
 
 	public function __call($name, $arguments) {
-		$var = PagarMe_Util::fromCamelCase(substr($name,3));
+		$var = PagarmeUtil::fromCamelCase(substr($name,3));
 		if(!strncasecmp($name, 'get', 3)) {
 			return $this->$var;
 		}	else if(!strncasecmp($name, 'set',3)) {
 			$this->$var = $arguments[0];
 		} else {
-			throw new Exception('Metodo inexistente '.$name);
+			throw new PagarmeException('Metodo inexistente '.$name);
 		}
 	}
 
@@ -100,7 +100,7 @@ class PagarMe_Object implements ArrayAccess, Iterator {
 
 
 		foreach($this->_unsavedAttributes->toArray() as $a) {
-			if($this->_attributes[$a] instanceof PagarMe_Object) {
+			if($this->_attributes[$a] instanceof Object) {
 				$arr[$a] = $this->_attributes[$a]->unsavedArray();
 			} else {
 				$arr[$a] = $this->_attributes[$a];
@@ -114,6 +114,14 @@ class PagarMe_Object implements ArrayAccess, Iterator {
 		if(!$class) {
 			$class = get_class();
 		}
+		$class = explode('PagarMe_', $class);
+		if ( class_exists('\\Pagarme\\Models\\'.end($class)) ) {
+			$class = '\\Pagarme\\Models\\'.end($class);
+		} elseif ( class_exists('\\Pagarme\\Transaction\\'.end($class)) ) {
+			$class = '\\Pagarme\\Transaction\\'.end($class);
+		} elseif ( class_exists('\\Pagarme\\Core\\Pagarme'.end($class)) ) {
+			$class = '\\Pagarme\\Core\\Pagarme'.end($class);
+		}
 		$obj = new $class($response);
 		return $obj;
 	}
@@ -126,7 +134,7 @@ class PagarMe_Object implements ArrayAccess, Iterator {
 		}
 
 		foreach($response as $key => $value) {
-			$this->_attributes[$key] = PagarMe_Util::convertToPagarMeObject($value);
+			$this->_attributes[$key] = PagarmeUtil::convertToPagarMeObject($value);
 			$this->_unsavedAttributes->remove($key);
 		}
 
@@ -176,7 +184,7 @@ class PagarMe_Object implements ArrayAccess, Iterator {
 	public function __toArray($recursive=false)
 	{
 		if ($recursive)
-			return PagarMe_Util::convertPagarMeObjectToArray($this->_attributes);
+			return PagarmeUtil::convertPagarMeObjectToArray($this->_attributes);
 		else
 			return $this->_attributes;
 	}

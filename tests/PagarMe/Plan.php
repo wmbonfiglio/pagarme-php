@@ -13,10 +13,10 @@ class PagarMe_PlanTest extends PagarMeTestCase {
 		$this->assertEqual($plan->getName(), "Plano Silver");
 		$plan->setName("Plano gold!");
 		$plan->save();
-		$plan2 = PagarMe_Plan::findById($plan->getId());
+		$plan2 = \Pagarme\Models\Plan::findById($plan->getId());
 		$this->assertEqual($plan->getName(), $plan2->getName());
 
-		$this->expectException(new IsAExpectation('PagarMe_Exception'));
+		$this->expectException(new IsAExpectation('\Pagarme\Core\PagarmeException'));
 		$plan2->setDays('60');
 		$plan2->save();
 	}
@@ -35,24 +35,24 @@ class PagarMe_PlanTest extends PagarMeTestCase {
 	}
 
 	public function testValidate() {
-		$plan = new PagarMe_Plan();
+		$plan = new \Pagarme\Models\Plan();
 
-		$this->expectException(new IsAExpectation('PagarMe_Exception'));
+		$this->expectException(new IsAExpectation('\Pagarme\Core\PagarmeException'));
 		$plan->setAmount('0');
 		$plan->create();
 		$plan->setAmount('10000');
 
-		$this->expectException(new IsAExpectation('PagarMe_Exception'));
+		$this->expectException(new IsAExpectation('\Pagarme\Core\PagarmeException'));
 		$plan->days('0');
 		$plan->create();
 		$plan->setDays('30');
 
-		$this->expectException(new IsAExpectation('PagarMe_Exception'));
+		$this->expectException(new IsAExpectation('\Pagarme\Core\PagarmeException'));
 		$plan->setTrialDays('-1');
 		$plan->create();
 		$plan->setTrialDays("10");
 
-		$this->expectException(new IsAExpectation('PagarMe_Exception'));
+		$this->expectException(new IsAExpectation('\Pagarme\Core\PagarmeException'));
 		$plan->setName('');
 		$plan->create();
 		$plan->setName('Plan');

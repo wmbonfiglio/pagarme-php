@@ -1,6 +1,6 @@
-<?php
+<?php namespace Pagarme;
 
-abstract class PagarMe {
+abstract class Pagarme {
 	public static $api_key;
 	const live = 1;
 	const endpoint = "https://api.pagar.me";

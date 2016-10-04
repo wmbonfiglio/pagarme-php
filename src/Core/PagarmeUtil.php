@@ -1,6 +1,6 @@
-<?php
+<?php namespace Pagarme\Core;
 
-class PagarMe_Util {
+class PagarmeUtil {
 
 	 public static function fromCamelCase($str) {
 		 $matches = NULL;
@@ -33,7 +33,7 @@ class PagarMe_Util {
 	{
 		$output = Array();
 		foreach ($object as $key => $value) {
-			if ($value instanceof PagarMe_Object) {
+			if ($value instanceof PagarmeObject) {
 				$output[$key] = $value->__toArray(true);
 			}
 			else if (is_array($value)) {
@@ -69,7 +69,7 @@ class PagarMe_Util {
 				$class = 'PagarMe_Object';
 			}
 
-			return PagarMe_Object::build($response, $class);
+			return PagarmeObject::build($response, $class);
 		} else {
 			return $response;
 		}
